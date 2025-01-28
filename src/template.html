@@ -1,63 +1,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Document</title>
+    <title>Weather App</title>
   </head>
   <body>
-    <img id="pokemon-img" src="=" class="w-auto h-[400px]" />
     <input
       type="search"
-      id="site-search"
+      id="search-bar"
       class="w-40 border-2 pl-2 border-gray-500"
       name="q"
     />
-    <button class="p-2 m-auto bg-black text-white text-2xl" onclick="search()">
-      SEARCH NEW GIFS
+    <button class="p-2 m-auto bg-black text-white text-2xl" id="btn">
+      Search City
     </button>
-    <script>
-      const searchBox = document.getElementById("site-search")
-      const img = document.getElementById("pokemon-img")
-      let intervalId = null // To store the interval reference
-
-      function search() {
-        const query = searchBox.value.trim().toLowerCase()
-
-        if (!query) {
-          alert("Please enter a Pokémon name!")
-          return
-        }
-
-        clearInterval(intervalId) // Clear previous interval, if any
-
-        fetch(`https://pokeapi.co/api/v2/pokemon/${query}`, { mode: "cors" })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error("Pokémon not found!")
-            }
-            return response.json()
-          })
-          .then((data) => {
-            // Ensure sprites exist
-            const normal = data.sprites.front_default
-            const shiny = data.sprites.front_shiny
-
-            if (!normal || !shiny) {
-              throw new Error("No sprites available for this Pokémon!")
-            }
-
-            // Alternate between sprites every 2 seconds
-            let isNormal = true
-            img.src = normal
-            intervalId = setInterval(() => {
-              img.src = isNormal ? shiny : normal
-              isNormal = !isNormal
-            }, 2000)
-          })
-          .catch((error) => {
-            console.log(error)
-            img.src = "" // Clear the image
-          })
-      }
-    </script>
   </body>
 </html>
