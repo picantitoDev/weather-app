@@ -26,14 +26,17 @@ async function getData() {
     // Main section
     // Aside section
     // Bottom Left section
-    //
-    console.log("Day: " + getDate()) // Current day
-    console.log("January 28") // Current date
-    console.log("Temp in F " + data.days[0].hours[hour].temp) // Temp
-    console.log("TempMax in F " + data.days[0].tempmax) // HIGH
-    console.log("TempMin in F " + data.days[0].tempmin) // LOW
-    console.log("Status: " + data.currentConditions.conditions) // Status
-    console.log("Feels Like: " + data.currentConditions.feelslike) // Feels like
+    const dataObj = {
+      temp: data.days[0].hours[hour].temp,
+      high: data.days[0].tempmax,
+      low: data.days[0].tempmin,
+      status: data.currentConditions.conditions,
+      feelslike: data.currentConditions.feelslike,
+    }
+    const obj = getDate()
+    console.log(obj)
+    console.log(dataObj)
+    return dataObj
   } catch (err) {
     console.error(err)
   }
@@ -42,10 +45,24 @@ async function getData() {
 function getDate() {
   let date = new Date()
 
-  const day = date.getDate()
-  const month = date.getMonth()
-  const year = date.getFullYear()
-  return `${day} ${month}, ${year}`
+  const f = new Intl.DateTimeFormat("en-us", {
+    dateStyle: "full",
+  })
+
+  const str = JSON.stringify(f.format(date)).replace(/^"|"$/g, "").split(",")
+  const weekDay = str[0]
+  const day = str[1].trim().split(" ")
+  const month = day[0].substring(0, 3)
+  const dayNum = day[1]
+  const year = str[2]
+
+  const dateObj = {
+    weekDay: weekDay,
+    month: month,
+    dayNum: dayNum,
+    year: year,
+  }
+  return dateObj
 }
 
 button.addEventListener("click", () => getData())
