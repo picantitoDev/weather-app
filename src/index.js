@@ -23,15 +23,31 @@ async function getData() {
     const data = await response.json()
     console.log(data)
 
-    // Main section
-    // Aside section
     // Bottom Left section
     const dataObj = {
+      // Main section
       temp: data.days[0].hours[hour].temp,
       high: data.days[0].tempmax,
       low: data.days[0].tempmin,
       status: data.currentConditions.conditions,
       feelslike: data.currentConditions.feelslike,
+      // Aside section
+      chanceOfRain: data.days[0].precipprob,
+      uvIndex: data.days[0].uvindex,
+      windStatus: data.days[0].windspeed,
+      humidity: data.days[0].humidity,
+      // Bottom Left
+      today: data.days[0].hours,
+      tomorrow: data.days[1],
+      week: data.days,
+
+      // Bottom mid
+      sunrise: data.days[0].sunrise,
+      sunset: data.days[0].sunset,
+      lengthOfDay: calculateDayLength(
+        data.days[0].sunrise,
+        data.days[0].sunset,
+      ),
     }
     const obj = getDate()
     console.log(obj)
@@ -40,6 +56,32 @@ async function getData() {
   } catch (err) {
     console.error(err)
   }
+}
+
+function timeStringToDate(timeString) {
+  const [hours, minutes, seconds] = timeString.split(":").map(Number)
+  const date = new Date()
+  date.setHours(hours, minutes, seconds, 0) // Set time, reset milliseconds
+  return date
+}
+
+function calculateDayLength(sunrise, sunset) {
+  const sunriseDate = timeStringToDate(sunrise)
+  const sunsetDate = timeStringToDate(sunset)
+
+  const differenceInMilliseconds = sunsetDate - sunriseDate
+  const differenceInSeconds = Math.floor(differenceInMilliseconds / 1000)
+  const hours = Math.floor(differenceInSeconds / 3600)
+  const minutes = Math.floor((differenceInSeconds % 3600) / 60)
+  const seconds = differenceInSeconds % 60
+
+  const day = {
+    hours: hours,
+    minutes: minutes,
+    seconds: seconds,
+  }
+
+  return day
 }
 
 function getDate() {
