@@ -150,10 +150,67 @@
           </div>
         </div>
       </div>
+
       <div
         id="pronostic"
-        class="bg-[rgba(21,39,79,0.5);] rounded-xl h-[370px]"
-      ></div>
+        class="bg-[rgba(21,39,79,0.5);] rounded-xl px-8 py-6 h-[370px] grid grid-cols-12 gap-x-6"
+      >
+        <div class="col-span-8 px-4 space-y-5">
+          <h1 class="text-white text-2xl">Today / Week</h1>
+          <div
+            class="flex w-[100%] h-[150px] bg-[rgba(21,39,79,0.5);] gap-x-2 rounded-xl p-2"
+          >
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+          </div>
+
+          <div
+            class="flex items-center justify-around w-[100%] h-[100px] bg-[rgba(21,39,79,0.5);] gap-x-2 rounded-xl"
+          >
+            <div class="flex py-4 gap-4">
+              <div>
+                <h2 class="text-white text-xl">Tomorrow</h2>
+                <p class="text-gray-300 text-[16px]">Thunder storm</p>
+              </div>
+              <div class="flex items-center justify-center text-4xl text-white">
+                14°
+              </div>
+            </div>
+
+            <div class="bg-white rounded-full h-[50px] w-[50px]"></div>
+          </div>
+        </div>
+        <div
+          class="col-span-4 bg-[rgba(21,39,79,0.5);] h-[325px] rounded-xl p-4 space-y-8"
+        >
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Sunrise</p>
+            <div class="flex gap-2 items-center">
+              <h1 class="text-white text-4xl">6:45</h1>
+              <p class="text-gray-300 text-xl">AM</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Sunset</p>
+            <div class="flex gap-2 items-center">
+              <h1 class="text-white text-4xl">5:30</h1>
+              <p class="text-gray-300 text-xl">PM</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Length of Day</p>
+            <div class="flex gap-2">
+              <h1 class="text-white text-4xl">10h 23m</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="other-cities" class="bg-[rgba(21,39,79,0.5);] rounded-xl"></div>
     </main>
     <footer
