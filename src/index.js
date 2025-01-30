@@ -1,6 +1,9 @@
-import { isInteger, toInteger } from "lodash"
 import "./styles.css"
-const searchBox = document.getElementById("search-bar")
+import "@fortawesome/fontawesome-free/js/fontawesome"
+import "@fortawesome/fontawesome-free/js/solid"
+import "@fortawesome/fontawesome-free/js/regular"
+import "@fortawesome/fontawesome-free/js/brands"
+
 let apiKey = "MLFQJEEBN6KDXRQZ5Z88HFVFJ"
 let button = document.getElementById("btn")
 
@@ -21,11 +24,11 @@ async function getData() {
     const hour = time.split(" ")[0].split(":")[0]
 
     const data = await response.json()
-    console.log(data)
+    const currentDay = getDate()
 
-    // Bottom Left section
     const dataObj = {
       // Main section
+      dayResponse: currentDay,
       temp: data.days[0].hours[hour].temp,
       high: data.days[0].tempmax,
       low: data.days[0].tempmin,
@@ -49,9 +52,6 @@ async function getData() {
         data.days[0].sunset,
       ),
     }
-    const obj = getDate()
-    console.log(obj)
-    console.log(dataObj)
     return dataObj
   } catch (err) {
     console.error(err)
@@ -61,7 +61,7 @@ async function getData() {
 function timeStringToDate(timeString) {
   const [hours, minutes, seconds] = timeString.split(":").map(Number)
   const date = new Date()
-  date.setHours(hours, minutes, seconds, 0) // Set time, reset milliseconds
+  date.setHours(hours, minutes, seconds, 0)
   return date
 }
 
@@ -107,8 +107,11 @@ function getDate() {
   return dateObj
 }
 
-button.addEventListener("click", () => getData())
+async function displayWeatherInfo() {
+  const data = await getData()
+  console.log(data)
+}
 
-function displayWeatherInfo(data) {}
+button.addEventListener("click", () => displayWeatherInfo())
 function displayEmoji() {}
 function displayError() {}
