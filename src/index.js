@@ -13,7 +13,7 @@ import partlyCloudyNightImage from "../src/img/partly-cloudy-night.png"
 import clearDayImage from "../src/img/clear-day.png"
 import clearNightImage from "../src/img/clear-night.png"
 
-let apiKey = "MLFQJEEBN6KDXRQZ5Z88HFVFJ"
+let apiKey = "SG3JBAAQFG3PGGWA2GA97G7XC"
 const button = document.getElementById("btn")
 const toggle = document.getElementById("temperatureToggle")
 const searchBox = document.getElementById("search")
@@ -23,13 +23,13 @@ button.addEventListener("click", async () => {
   if (city) {
     try {
       const weatherData = await getData(city)
-      console.log(weatherData)
+      console.log(weatherData.temp)
 
       displayWeatherInfo(weatherData)
       displayIcons(weatherData)
       changeTemp(weatherData)
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
+      console.log("Couldnt retrieve data" + err)
     }
   } else {
     alert("Please enter a city")
@@ -38,6 +38,7 @@ button.addEventListener("click", async () => {
 
 document.addEventListener("DOMContentLoaded", async () => {
   const weatherData = await getData()
+  console.log(weatherData.temp)
   displayWeatherInfo(weatherData)
   displayIcons(weatherData)
 
@@ -52,15 +53,17 @@ async function getData(city = "Trujillo") {
 
   try {
     const response = await fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?key=${apiKey}`,
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?&key=SG3JBAAQFG3PGGWA2GA97G7XC&contentType=json`,
     )
 
     const time = new Date().toLocaleTimeString()
-    const hour = time.split(" ")[0].split(":")[0]
+    const hour = time.split(" ")[0].split(":")[0].replace(/^0+/, "")
+    console.log(hour)
 
     const data = await response.json()
     const currentDay = getDate()
 
+    console.log(data.days[0].hours[hour].temp)
     const dataObj = {
       // Main section
       currentHour: hour,
@@ -90,9 +93,10 @@ async function getData(city = "Trujillo") {
         data.days[0].sunset,
       ),
     }
-    console.log(data)
+    console.log(dataObj.temp)
     return dataObj
   } catch (err) {
+    console.log("TOO MUCH REQUESTS")
     console.error(err)
   }
 }
@@ -150,7 +154,7 @@ function getRightUnits(boolean, value) {
   if (boolean) {
     return fahrenheitToCelsius(value)
   } else {
-    return celsiusToFahrenheit(value)
+    return value
   }
 }
 
@@ -161,6 +165,9 @@ function changeTemp(data) {
   const feelsLike = document.getElementById("feelsLike")
   const tomorrowTemp = document.getElementById("tomorrowTemp")
   const weekTemps = document.querySelectorAll(".thisWeekTemp")
+  const todayHoursTemps = document.querySelectorAll(".todayHourlyTemp")
+  const windStatus = document.getElementById("wind")
+  const unit = document.getElementById("unit")
 
   toggle.addEventListener("change", function () {
     // Check if the checkbox is checked
@@ -171,7 +178,8 @@ function changeTemp(data) {
       low.innerHTML = `${getRightUnits(toggle.checked, data.low)}` // has to change
       feelsLike.innerHTML = `${getRightUnits(toggle.checked, data.feelslike)}` // has to change
       tomorrowTemp.innerHTML = `${getRightUnits(toggle.checked, data.tomorrow.temp)}` // has to change
-
+      windStatus.innerHTML = `${fromMPHtoKMH(data.windStatus)}`
+      unit.innerHTML = "km/h"
       let i = 0
       for (let weekTemp of weekTemps) {
         weekTemp.innerHTML = Math.round(
@@ -179,9 +187,22 @@ function changeTemp(data) {
         )
         i++
       }
+      const hourTemps = [6, 9, 12, 15, 17, 19, 22]
+
+      hourTemps.forEach((hour, index) => {
+        if (data.today[hour]) {
+          todayHoursTemps[index].innerHTML = Math.round(
+            getRightUnits(toggle.checked, data.today[hour].temp),
+          )
+        } else {
+          todayHoursTemps[index].innerHTML = "N/A"
+        }
+      })
 
       changePrefix()
     } else {
+      unit.innerHTML = "mph"
+      windStatus.innerHTML = `${data.windStatus}`
       console.log("F") // Checkbox is unchecked, so it's 'F'
       temp.innerHTML = `${getRightUnits(toggle.checked, data.temp)}` // has to change
       high.innerHTML = `${getRightUnits(toggle.checked, data.high)}` // has to change
@@ -195,6 +216,18 @@ function changeTemp(data) {
         )
         i++
       }
+
+      const hourTemps = [6, 9, 12, 15, 17, 19, 22]
+
+      hourTemps.forEach((hour, index) => {
+        if (data.today[hour]) {
+          todayHoursTemps[index].innerHTML = Math.round(
+            getRightUnits(toggle.checked, data.today[hour].temp),
+          )
+        } else {
+          todayHoursTemps[index].innerHTML = "N/A"
+        }
+      })
 
       changePrefix()
     }
@@ -257,8 +290,11 @@ function displayWeatherInfo(data) {
   const weekDays = document.querySelectorAll(".thisWeek")
   const weekIcons = document.querySelectorAll(".thisWeekIcon")
 
+  const todayHoursTemps = document.querySelectorAll(".todayHourlyTemp")
+
+  console.log(data)
+
   let i = 0
-  let x = 1
   let z = 0
 
   for (let weekTemp of weekTemps) {
@@ -268,6 +304,18 @@ function displayWeatherInfo(data) {
     i++
   }
 
+  const hourTemps = [6, 9, 12, 15, 17, 19, 22]
+
+  hourTemps.forEach((hour, index) => {
+    if (data.today[hour]) {
+      todayHoursTemps[index].innerHTML = Math.round(
+        getRightUnits(toggle.checked, data.today[hour].temp),
+      )
+    } else {
+      todayHoursTemps[index].innerHTML = "N/A"
+    }
+  })
+
   for (let weekIcon of weekIcons) {
     weekIcon.src = getWeatherIcon(data.week[z++].icon)
   }
@@ -275,16 +323,12 @@ function displayWeatherInfo(data) {
   for (let i = 0; i < weekDays.length; i++) {
     if (i === 0) {
       weekDays[i].innerHTML = "Today"
-      continue
+    } else {
+      weekDays[i].innerHTML = new Date(data.week[i].datetime).toLocaleString(
+        "en-us",
+        { weekday: "short" },
+      ) // "Sat", "Sun", etc.
     }
-
-    weekDays[i].innerHTML = new Date(data.week[++x].datetime)
-      .toLocaleString("en-us", {
-        weekday: "long",
-      })
-      .substring(0, 3)
-
-    x++
   }
 
   location.innerHTML = data.location
@@ -299,7 +343,7 @@ function displayWeatherInfo(data) {
   chanceOfRain.innerHTML = `${Math.round(data.chanceOfRain)}%`
   uvIndex.innerHTML = `${data.uvIndex}`
   windStatus.innerHTML = `${data.windStatus}`
-  humidity.innerHTML = `${data.humidity}`
+  humidity.innerHTML = `${Math.round(data.humidity)}%`
   sunrise.innerHTML = `${data.sunrise.slice(1).substring(0, 4)}`
   sunset.innerHTML = `${tConvert(data.sunset).substring(0, 4)}`
   lengthOfDay.innerHTML = `${data.lengthOfDay.hours}h ${data.lengthOfDay.minutes}m`
@@ -307,14 +351,23 @@ function displayWeatherInfo(data) {
   tomorrowTemp.innerHTML = `${getRightUnits(toggle.checked, data.tomorrow.temp)}` // has to change
 }
 
+function fromMPHtoKMH(speed) {
+  return Math.round(speed * 1.60934, 1)
+}
+
 function displayIcons(data) {
   const bigWeatherIcon = document.getElementById("bigWeatherIcon")
   const tomorrowIcon = document.getElementById("tomorrowIcon")
   const todayIcons = document.querySelectorAll(".todayIcon")
 
-  for (let icon of todayIcons) {
-    icon.src = getWeatherIcon(data.icon)
-  }
+  todayIcons[0].src = getWeatherIcon(data.today[6].icon)
+  todayIcons[1].src = getWeatherIcon(data.today[9].icon)
+  todayIcons[2].src = getWeatherIcon(data.today[12].icon)
+  todayIcons[3].src = getWeatherIcon(data.today[15].icon)
+  todayIcons[4].src = getWeatherIcon(data.today[17].icon)
+  todayIcons[5].src = getWeatherIcon(data.today[19].icon)
+  todayIcons[6].src = getWeatherIcon(data.today[22].icon)
+
   bigWeatherIcon.src = getWeatherIcon(data.icon)
   tomorrowIcon.src = getWeatherIcon(data.tomorrow.icon)
 }
