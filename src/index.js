@@ -55,7 +55,7 @@ async function getData(city = "Trujillo") {
   try {
     loadingComponent.classList.remove("hidden")
     const response = await fetch(
-      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?&key=SG3JBAAQFG3PGGWA2GA97G7XC&contentType=json`,
+      `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?&key=${apiKey}&contentType=json`,
     )
 
     const time = new Date().toLocaleTimeString()
