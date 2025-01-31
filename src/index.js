@@ -3,20 +3,21 @@ import "@fortawesome/fontawesome-free/js/fontawesome"
 import "@fortawesome/fontawesome-free/js/solid"
 import "@fortawesome/fontawesome-free/js/regular"
 import "@fortawesome/fontawesome-free/js/brands"
-import snowImage from "../src/img/snow.png"
-import rainImage from "../src/img/rain.png"
-import fogImage from "../src/img/fog.png"
-import windImage from "../src/img/wind.png"
-import cloudyImage from "../src/img/cloudy.png"
-import partlyCloudyDayImage from "../src/img/partly-cloudy-day.png"
-import partlyCloudyNightImage from "../src/img/partly-cloudy-night.png"
-import clearDayImage from "../src/img/clear-day.png"
-import clearNightImage from "../src/img/clear-night.png"
+import snowImage from "../src/img/326.svg"
+import rainImage from "../src/img/296.svg"
+import fogImage from "../src/img/143.svg"
+import windImage from "../src/img/248.svg"
+import cloudyImage from "../src/img/119.svg"
+import partlyCloudyDayImage from "../src/img/116.svg"
+import partlyCloudyNightImage from "../src/img/117.svg"
+import clearDayImage from "../src/img/113.svg"
+import clearNightImage from "../src/img/114.svg"
 
 let apiKey = "SG3JBAAQFG3PGGWA2GA97G7XC"
 const button = document.getElementById("btn")
 const toggle = document.getElementById("temperatureToggle")
 const searchBox = document.getElementById("search")
+const loadingComponent = document.getElementById("loading")
 
 button.addEventListener("click", async () => {
   const city = searchBox.value.trim().toLowerCase()
@@ -52,6 +53,7 @@ async function getData(city = "Trujillo") {
   }
 
   try {
+    loadingComponent.classList.remove("hidden")
     const response = await fetch(
       `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?&key=SG3JBAAQFG3PGGWA2GA97G7XC&contentType=json`,
     )
@@ -62,7 +64,7 @@ async function getData(city = "Trujillo") {
 
     const data = await response.json()
     const currentDay = getDate()
-
+    loadingComponent.classList.add("hidden")
     console.log(data.days[0].hours[hour].temp)
     const dataObj = {
       // Main section
