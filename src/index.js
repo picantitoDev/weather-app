@@ -24,7 +24,7 @@ button.addEventListener("click", async () => {
   if (city) {
     try {
       const weatherData = await getData(city)
-      console.log(weatherData.temp)
+      console.log(weatherData)
 
       displayWeatherInfo(weatherData)
       displayIcons(weatherData)
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   changeTemp(weatherData)
 })
 
-async function getData(city = "Trujillo") {
+async function getData(city = "New York") {
   if (!city) {
     alert("Please enter a location!")
     return
@@ -66,10 +66,18 @@ async function getData(city = "Trujillo") {
     const currentDay = getDate()
     loadingComponent.classList.add("hidden")
     console.log(data.days[0].hours[hour].temp)
+    const parsedAddress = data.resolvedAddress
+      .split(",")
+      .map((part) => part.trim())
+
+    const cityName = parsedAddress[0] || "Unknown City"
+    const countryName =
+      parsedAddress[parsedAddress.length - 1] || "Unknown Country"
+    console.log(`${cityName}, ${countryName}`)
     const dataObj = {
       // Main section
       currentHour: hour,
-      location: data.address,
+      location: `${cityName}, ${countryName}`,
       icon: data.currentConditions.icon,
       dayResponse: currentDay,
       temp: data.days[0].hours[hour].temp,
