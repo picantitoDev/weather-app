@@ -1,11 +1,471 @@
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-<script defer src="bundle.js"></script></head>
-<body>
-  <img src="#">
-  <script>
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>⛅ Weather App</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  <script defer src="bundle.js"></script></head>
+
+  <body class="bg-[url(/src/img/purple-bg.jpg)] bg-cover bg-no-repeat">
+    <header
+      class="flex items-center justify-between px-16 h-[75px] w-[75%] rounded-b-xl mx-auto bg-[rgba(21,39,79,0.5)]"
+    >
+      <div class="search-container w-[450px] grid grid-cols-12 gap-x-6">
+        <div
+          class="flex rounded-full w-[300px] border-2 col-span-8 h-[40px] border-none overflow-hidden max-w-md mx-auto font-[sans-serif]"
+        >
+          <input
+            type="text"
+            placeholder="Search City..."
+            class="w-full outline-none bg-white text-sm px-5 py-3"
+            id="search"
+          />
+          <button
+            type="button"
+            id="btn"
+            class="flex items-center justify-center bg-[#742BED] hover:bg-[#9150e1] px-6"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 192.904 192.904"
+              width="18px"
+              stroke="white"
+              stroke-width="10"
+              class="fill-white"
+            >
+              <path
+                d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+        <div id="loading" role="status" class="hidden col-span-2">
+          <svg
+            aria-hidden="true"
+            class="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-[#742BED]"
+            viewBox="0 0 100 101"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+              fill="currentColor"
+            />
+            <path
+              d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+              fill="currentFill"
+            />
+          </svg>
+          <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+
+      <div class="text-2xl text-white mr-72">Weather App</div>
+
+      <div class="picantito flex items-center justify-evenly px-2 gap-2">
+        <svg
+          class="h-[40px] w-[40px] hover:fill-gray-300"
+          xmlns="http://www.w3.org/2000/svg"
+          x="0px"
+          y="0px"
+          width="100"
+          height="100"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="white"
+            d="M10.9,2.1c-4.6,0.5-8.3,4.2-8.8,8.7c-0.6,5,2.5,9.3,6.9,10.7v-2.3c0,0-0.4,0.1-0.9,0.1c-1.4,0-2-1.2-2.1-1.9 c-0.1-0.4-0.3-0.7-0.6-1C5.1,16.3,5,16.3,5,16.2C5,16,5.3,16,5.4,16c0.6,0,1.1,0.7,1.3,1c0.5,0.8,1.1,1,1.4,1c0.4,0,0.7-0.1,0.9-0.2 c0.1-0.7,0.4-1.4,1-1.8c-2.3-0.5-4-1.8-4-4c0-1.1,0.5-2.2,1.2-3C7.1,8.8,7,8.3,7,7.6C7,7.2,7,6.6,7.3,6c0,0,1.4,0,2.8,1.3 C10.6,7.1,11.3,7,12,7s1.4,0.1,2,0.3C15.3,6,16.8,6,16.8,6C17,6.6,17,7.2,17,7.6c0,0.8-0.1,1.2-0.2,1.4c0.7,0.8,1.2,1.8,1.2,3 c0,2.2-1.7,3.5-4,4c0.6,0.5,1,1.4,1,2.3v3.3c4.1-1.3,7-5.1,7-9.5C22,6.1,16.9,1.4,10.9,2.1z"
+          ></path>
+        </svg>
+
+        <a
+          href="https://github.com/picantitoDev"
+          rel="noopener"
+          target="_blank"
+        >
+          <p class="text-white hover:text-gray-300">picantitoDev</p>
+        </a>
+      </div>
+    </header>
+    <main
+      class="h-[calc(100vh-150px)] w-[75%] bg-none p-2 my-0 mx-auto grid grid-cols-2 gap-4"
+    >
+      <div
+        id="current-conditions"
+        class="bg-[rgba(21,39,79,0.5)] px-8 grid grid-cols-12 rounded-xl h-[370px]"
+      >
+        <div class="space-y-12 py-6 px-6 w-[300px] col-span-5">
+          <div
+            class="bg-[#742BED] h-[40px] rounded-2xl px-4 font-semibold opacity-100 text-white flex items-center gap-2 p-2"
+          >
+            <i class="fa-solid fa-location-dot"></i>
+            <p class="break-words" id="location">Trujillo, La Libertad, Peru</p>
+          </div>
+
+          <div>
+            <h1 class="text-white font-semibold text-4xl" id="weekday">
+              Monday
+            </h1>
+            <p class="text-white" id="date">24 Dec, 2023</p>
+          </div>
+
+          <div>
+            <div class="flex gap-1">
+              <h1 class="text-white text-6xl font-semibold" id="temp"></h1>
+              <div class="prefix text-white text-6xl font-semibold">°F</div>
+            </div>
+            <div class="flex gap-4 mt-2">
+              <div class="flex gap-1">
+                <p class="text-white">High:</p>
+                <div id="high" class="text-white">27</div>
+                <p class="prefix text-white">°F</p>
+              </div>
+              <div class="flex gap-1">
+                <p class="text-white">Low:</p>
+                <div id="low" class="text-white">Low: 10</div>
+                <div class="prefix text-white">°F</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-span-2"></div>
+        <div class="col-span-5 py-7 px-6 space-y-6 flex flex-col items-end">
+          <!--Toggle Button-->
+          <div class="flex items-center">
+            <label class="relative cursor-pointer">
+              <input
+                type="checkbox"
+                class="sr-only peer"
+                id="temperatureToggle"
+              />
+              <div
+                class="w-[65px] h-8 flex items-center bg-gray-300 rounded-full text-[18px] peer-checked:text-[#742BED] text-[#742BED] font-bold after:flex after:items-center after:justify-center peer after:content-['F'] peer-checked:after:content-['C'] peer-checked:after:translate-x-[30px] after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-[#742BED]"
+              ></div>
+            </label>
+          </div>
+
+          <!--Big Weather Icon-->
+          <img class="rounded-full h-[150px] w-[150px]" id="bigWeatherIcon" />
+
+          <div class="space-y-2">
+            <h1 class="text-white font-semibold text-3xl" id="status">
+              Cloudy
+            </h1>
+            <div class="flex gap-2 justify-end">
+              <p class="text-white">Feels Like</p>
+              <p class="text-white" id="feelsLike">26</p>
+              <div class="prefix text-white">°F</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="today-highlights"
+        class="bg-[rgba(21,39,79,0.5);] rounded-xl px-8 py-6 h-[370px]"
+      >
+        <h1 class="text-white text-2xl">Today's Highlight</h1>
+        <div class="grid grid-cols-2 h-[270px] gap-4 mt-4 grid-rows-2">
+          <div
+            class="bg-[rgba(21,39,79,0.5);] rounded-2xl p-2 px-4 grid grid-cols-2"
+          >
+            <div class="space-y-2">
+              <p class="text-white">Chance of Rain</p>
+              <img class="h-[70px] w-[70px] ml-2" src="8a8f98577bd5dadb944c.png" />
+            </div>
+
+            <div class="flex items-center justify-center">
+              <p class="text-white text-[50px]" id="chanceOfRain">96%</p>
+            </div>
+          </div>
+          <div
+            class="bg-[rgba(21,39,79,0.5);] rounded-2xl p-2 px-4 grid grid-cols-2"
+          >
+            <div>
+              <p class="text-white">UV Index</p>
+              <img class="h-[80px] w-[80px] ml-1" src="101f659ce2dcbf5aaad6.png" />
+            </div>
+
+            <div class="flex items-center justify-center">
+              <p class="text-white text-[50px]" id="uvIndex">96%</p>
+            </div>
+          </div>
+          <div
+            class="bg-[rgba(21,39,79,0.5);] rounded-2xl p-2 px-4 grid grid-cols-2"
+          >
+            <div class="space-y-2">
+              <p class="text-white">Wind Status</p>
+              <img class="h-[70px] w-[70px] ml-2" src="e2017aace547b6b104c3.png" />
+            </div>
+
+            <div class="flex items-center justify-center gap-2">
+              <p class="text-white text-[50px]" id="wind">96%</p>
+              <div id="unit" class="text-white text-xl mt-6">mph</div>
+            </div>
+          </div>
+          <div
+            class="bg-[rgba(21,39,79,0.5);] rounded-2xl p-2 px-4 grid grid-cols-2"
+          >
+            <div class="space-y-2">
+              <p class="text-white">Humidity</p>
+              <img
+                class="h-[60px] w-[60px] ml-4"
+                src="3b0a9b7043a9d4cb0113.png"
+              />
+            </div>
+
+            <div class="flex items-center justify-center">
+              <p class="text-white text-[50px]" id="humidity">96%</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="pronostic"
+        class="bg-[rgba(21,39,79,0.5);] rounded-xl px-8 py-6 h-[370px] grid grid-cols-12 gap-x-6"
+      >
+        <div class="col-span-8 px-4 space-y-5">
+          <h1 class="text-white text-2xl">Today</h1>
+          <div
+            class="flex w-[100%] h-[150px] bg-[rgba(21,39,79,0.5);] gap-x-2 rounded-xl p-[6px]"
+          >
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">6AM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">9AM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">12PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">3PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">5PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">7PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">10PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white todayHourlyTemp">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="flex items-center justify-around w-[100%] h-[100px] bg-[rgba(21,39,79,0.5);] gap-x-2 rounded-xl"
+          >
+            <div class="flex py-4 gap-4">
+              <div>
+                <h2 class="text-white text-xl">Tomorrow</h2>
+                <p class="text-gray-300 text-[16px]" id="tomorrowStatus">
+                  Thunder storm
+                </p>
+              </div>
+              <div class="flex items-center justify-center gap-1">
+                <div class="text-4xl text-white" id="tomorrowTemp">14°</div>
+                <div class="prefix text-white text-4xl">°F</div>
+              </div>
+            </div>
+
+            <img class="rounded-full h-[50px] w-[50px]" id="tomorrowIcon" />
+          </div>
+        </div>
+        <div
+          class="col-span-4 bg-[rgba(21,39,79,0.5);] h-[325px] rounded-xl p-4 space-y-8"
+        >
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Sunrise</p>
+            <div class="flex gap-2 items-center">
+              <h1 class="text-white text-4xl" id="sunrise">6:45</h1>
+              <p class="text-gray-300 text-xl">AM</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Sunset</p>
+            <div class="flex gap-2 items-center">
+              <h1 class="text-white text-4xl" id="sunset">5:30</h1>
+              <p class="text-gray-300 text-xl">PM</p>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <p class="text-gray-300 text-xl">Length of Day</p>
+            <div class="flex gap-2">
+              <h1 class="text-white text-4xl" id="lengthOfDay">10h 23m</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="other-cities"
+        class="bg-[rgba(21,39,79,0.5);] px-8 py-6 space-y-4 rounded-xl"
+      >
+        <h1 class="text-white text-2xl">7 Days Forecast</h1>
+        <div class="grid grid-cols-7 gap-x-4 h-[270px]">
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+          <div
+            class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
+          >
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="h-[75px] w-[100%] text-gray-200 flex items-center justify-center text-xl"
+    >
+      &copy; 2025 Piero Arturo
+    </footer>
+  </body>
 </html>
