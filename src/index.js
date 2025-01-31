@@ -410,4 +410,3 @@ function getWeatherIcon(icon) {
   }
   return img
 }
-function displayError() {}
