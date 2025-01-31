@@ -1,12 +1,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Weather App</title>
+    <title>⛅ Weather App</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
   </head>
+
   <body class="bg-[url(/src/img/purple-bg.jpg)] bg-cover bg-no-repeat">
     <header
       class="flex items-center justify-between px-16 h-[75px] w-[75%] rounded-b-xl mx-auto bg-[rgba(21,39,79,0.5)]"
@@ -172,7 +179,7 @@
           >
             <div class="space-y-2">
               <p class="text-white">Chance of Rain</p>
-              <img class="h-[70px] w-[70px] ml-2" src="/src/img/umbrella.png" />
+              <img class="h-[70px] w-[70px] ml-2" src="/src/img/paraguas.png" />
             </div>
 
             <div class="flex items-center justify-center">
@@ -184,7 +191,7 @@
           >
             <div>
               <p class="text-white">UV Index</p>
-              <img class="h-[90px] w-[90px]" src="/src/img/sunIcon.png" />
+              <img class="h-[80px] w-[80px] ml-1" src="/src/img/uv-index.png" />
             </div>
 
             <div class="flex items-center justify-center">
@@ -209,7 +216,10 @@
           >
             <div class="space-y-2">
               <p class="text-white">Humidity</p>
-              <img class="h-[60px] w-[40px] ml-6" src="/src/img/humidity.png" />
+              <img
+                class="h-[60px] w-[60px] ml-4"
+                src="/src/img/humedad (1).png"
+              />
             </div>
 
             <div class="flex items-center justify-center">
@@ -377,7 +387,7 @@
         id="other-cities"
         class="bg-[rgba(21,39,79,0.5);] px-8 py-6 space-y-4 rounded-xl"
       >
-        <h1 class="text-white text-2xl">This Week</h1>
+        <h1 class="text-white text-2xl">7 Days Forecast</h1>
         <div class="grid grid-cols-7 gap-x-4 h-[270px]">
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
