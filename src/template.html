@@ -51,10 +51,10 @@
       >
         <div class="space-y-12 py-6 px-6 w-[300px] col-span-5">
           <div
-            class="bg-[#742BED] rounded-2xl px-4 font-semibold opacity-100 text-white flex items-center gap-2 p-2"
+            class="bg-[#742BED] h-[40px] rounded-2xl px-4 font-semibold opacity-100 text-white flex items-center gap-2 p-2"
           >
             <i class="fa-solid fa-location-dot"></i>
-            <p class="" id="location">Trujillo, La Libertad, Peru</p>
+            <p class="break-words" id="location">Trujillo, La Libertad, Peru</p>
           </div>
 
           <div>
@@ -65,10 +65,21 @@
           </div>
 
           <div>
-            <h1 class="text-white text-6xl font-semibold" id="temp">26°C</h1>
-            <div class="flex gap-2">
-              <div id="high" class="text-white">High: 27</div>
-              <div id="low" class="text-white">Low: 10</div>
+            <div class="flex gap-1">
+              <h1 class="text-white text-6xl font-semibold" id="temp"></h1>
+              <div class="prefix text-white text-6xl font-semibold">°F</div>
+            </div>
+            <div class="flex gap-4 mt-2">
+              <div class="flex gap-1">
+                <p class="text-white">High:</p>
+                <div id="high" class="text-white">27</div>
+                <p class="prefix text-white">°F</p>
+              </div>
+              <div class="flex gap-1">
+                <p class="text-white">Low:</p>
+                <div id="low" class="text-white">Low: 10</div>
+                <div class="prefix text-white">°F</div>
+              </div>
             </div>
           </div>
         </div>
@@ -77,7 +88,11 @@
           <!--Toggle Button-->
           <div class="flex items-center">
             <label class="relative cursor-pointer">
-              <input type="checkbox" class="sr-only peer" />
+              <input
+                type="checkbox"
+                class="sr-only peer"
+                id="temperatureToggle"
+              />
               <div
                 class="w-[65px] h-8 flex items-center bg-gray-300 rounded-full text-[18px] peer-checked:text-[#742BED] text-[#742BED] font-bold after:flex after:items-center after:justify-center peer after:content-['F'] peer-checked:after:content-['C'] peer-checked:after:translate-x-[30px] after:absolute after:left-[2px] peer-checked:after:border-white after:bg-white after:border after:border-gray-300 after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-[#742BED]"
               ></div>
@@ -85,11 +100,17 @@
           </div>
 
           <!--Big Weather Icon-->
-          <div class="rounded-full bg-white h-[150px] w-[150px]"></div>
+          <img class="rounded-full h-[150px] w-[150px]" id="bigWeatherIcon" />
 
           <div class="space-y-2">
-            <h1 class="text-white font-semibold text-3xl">Cloudy</h1>
-            <p class="text-white">Feels Like 26</p>
+            <h1 class="text-white font-semibold text-3xl" id="status">
+              Cloudy
+            </h1>
+            <div class="flex gap-2 justify-end">
+              <p class="text-white">Feels Like</p>
+              <p class="text-white" id="feelsLike">26</p>
+              <div class="prefix text-white">°F</div>
+            </div>
           </div>
         </div>
       </div>
@@ -109,7 +130,7 @@
             </div>
 
             <div class="flex items-center justify-center">
-              <p class="text-white text-[50px]">96%</p>
+              <p class="text-white text-[50px]" id="chanceOfRain">96%</p>
             </div>
           </div>
           <div
@@ -121,7 +142,7 @@
             </div>
 
             <div class="flex items-center justify-center">
-              <p class="text-white text-[50px]">96%</p>
+              <p class="text-white text-[50px]" id="uvIndex">96%</p>
             </div>
           </div>
           <div
@@ -133,7 +154,7 @@
             </div>
 
             <div class="flex items-center justify-center">
-              <p class="text-white text-[50px]">96%</p>
+              <p class="text-white text-[50px]" id="wind">96%</p>
             </div>
           </div>
           <div
@@ -145,7 +166,7 @@
             </div>
 
             <div class="flex items-center justify-center">
-              <p class="text-white text-[50px]">96%</p>
+              <p class="text-white text-[50px]" id="humidity">96%</p>
             </div>
           </div>
         </div>
@@ -160,13 +181,104 @@
           <div
             class="flex w-[100%] h-[150px] bg-[rgba(21,39,79,0.5);] gap-x-2 rounded-xl p-2"
           >
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
-            <div class="rounded-xl bg-white w-[14%] h-[100%]"></div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
+            <div
+              class="rounded-xl border-2 border-gray-300 flex flex-col justify-evenly py-4 space-y-2 p-1 w-[14%] h-[100%]"
+            >
+              <p class="text-white text-center">1PM</p>
+              <img
+                src="#"
+                alt=""
+                class="todayIcon rounded-full mx-auto h-[35px] w-[35px]"
+              />
+              <div class="flex justify-center">
+                <p class="temp text-white">24</p>
+                <p class="text-white">°</p>
+              </div>
+            </div>
           </div>
 
           <div
@@ -175,14 +287,17 @@
             <div class="flex py-4 gap-4">
               <div>
                 <h2 class="text-white text-xl">Tomorrow</h2>
-                <p class="text-gray-300 text-[16px]">Thunder storm</p>
+                <p class="text-gray-300 text-[16px]" id="tomorrowStatus">
+                  Thunder storm
+                </p>
               </div>
-              <div class="flex items-center justify-center text-4xl text-white">
-                14°
+              <div class="flex items-center justify-center gap-1">
+                <div class="text-4xl text-white" id="tomorrowTemp">14°</div>
+                <div class="prefix text-white text-4xl">°F</div>
               </div>
             </div>
 
-            <div class="bg-white rounded-full h-[50px] w-[50px]"></div>
+            <img class="rounded-full h-[50px] w-[50px]" id="tomorrowIcon" />
           </div>
         </div>
         <div
@@ -191,21 +306,21 @@
           <div class="space-y-2">
             <p class="text-gray-300 text-xl">Sunrise</p>
             <div class="flex gap-2 items-center">
-              <h1 class="text-white text-4xl">6:45</h1>
+              <h1 class="text-white text-4xl" id="sunrise">6:45</h1>
               <p class="text-gray-300 text-xl">AM</p>
             </div>
           </div>
           <div class="space-y-2">
             <p class="text-gray-300 text-xl">Sunset</p>
             <div class="flex gap-2 items-center">
-              <h1 class="text-white text-4xl">5:30</h1>
+              <h1 class="text-white text-4xl" id="sunset">5:30</h1>
               <p class="text-gray-300 text-xl">PM</p>
             </div>
           </div>
           <div class="space-y-2">
             <p class="text-gray-300 text-xl">Length of Day</p>
             <div class="flex gap-2">
-              <h1 class="text-white text-4xl">10h 23m</h1>
+              <h1 class="text-white text-4xl" id="lengthOfDay">10h 23m</h1>
             </div>
           </div>
         </div>
@@ -220,51 +335,72 @@
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Today</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">20°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Tue</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">21°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Wed</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">20°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Thu</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">19°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Fri</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">18°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Sat</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">18°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
           <div
             class="rounded-xl bg-[rgba(21,39,79,0.5)] py-4 space-y-16 flex flex-col items-center"
           >
-            <h1 class="text-xl text-gray-300">Sun</h1>
-            <div class="rounded-full bg-white h-[50px] w-[50px]"></div>
-            <p class="text-2xl text-gray-300">15°</p>
+            <h1 class="text-xl text-gray-300 thisWeek"></h1>
+            <img class="rounded-full h-[50px] w-[50px] thisWeekIcon" />
+            <div class="flex">
+              <p class="text-2xl text-gray-300 temp thisWeekTemp">20</p>
+              <p class="text-2xl text-gray-300">°</p>
+            </div>
           </div>
         </div>
       </div>
