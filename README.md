@@ -1,0 +1,1 @@
+This app helped me to learn the use of fetch in js
